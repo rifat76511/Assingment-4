@@ -8,6 +8,8 @@ const rejectedBtn = document.getElementById("rejected-btn");
 const addSection = document.getElementById("add-section");
 const allCar = document.getElementById("all-cards");
 const noJobs = document.getElementById('no-jobs');
+const countHidden = document.getElementById("counts-cards-hide");
+const rejectCountCard =document.getElementById("of-hide");
 
 
 function toggleBtn(id) {
@@ -28,21 +30,30 @@ function toggleBtn(id) {
         addSection.classList.add("hidden");
         allCar.classList.remove("hidden");
         noJobs.classList.add("hidden");
+        countHidden.classList.add("hidden");
+        rejectCountCard.classList.add("hidden");
 
     } else if (id === "interview-btn") {
         allCar.classList.add("hidden");
         addSection.classList.remove("hidden");
+        countHidden.classList.remove("hidden");
+        rejectCountCard.classList.add("hidden");
         if (interviewList.length === 0) {
             noJobs.classList.remove("hidden");
             addSection.innerHTML = '';
+
         }
         else {
             noJobs.classList.add("hidden");
+            
             addInterview()
         }
     } else if (id === "rejected-btn") {
         allCar.classList.add("hidden");
         addSection.classList.remove("hidden");
+        countHidden.classList.add("hidden");
+        rejectCountCard.classList.remove("hidden");
+
 
         if (rejectedList.length === 0) {
             noJobs.classList.remove("hidden");
@@ -50,6 +61,7 @@ function toggleBtn(id) {
         }
         else {
             noJobs.classList.add("hidden");
+          
             addReject()
         }
     }
@@ -80,7 +92,7 @@ function toggleBtn(id) {
 
             if (statusElement) {
                 statusElement.innerText = 'INTERVIEW';
-                statusElement.className = ' btn mr-2 border-2 text-green-400 border-green-400 bg-green-100 p-2 text-xs my-3';
+                statusElement.className = ' btn mr-2 border-2 text-green-400 border-green-400 bg-green-100 p-2 text-xs my-3 statu';
             }
             if (!existItem) {
                 interviewList.push(cardInfo);
@@ -97,10 +109,12 @@ function toggleBtn(id) {
             }
         } else if (event.target.classList.contains('reject')) {
             const parents = event.target.parentNode.parentNode.parentNode;
+            console.log(parents)
             const name = parents.querySelector(".cardName").innerText;
             const skils = parents.querySelector(".skills").innerText;
             const salary = parents.querySelector(".salary-or-time").innerText;
-            // const status = parents.querySelector(".statu").innerText;
+            const status = parents.querySelector(".statu").innerText;
+            console.log(status);
             const reqirment = parents.querySelector(".requirement").innerText;
 
             const cardInfo = {
@@ -111,11 +125,11 @@ function toggleBtn(id) {
                 reqirment
             };
             const existItem = rejectedList.find(item => item.name == cardInfo.name);
-            const statusElement = parents.querySelector(".statu");
+            const statusReject = parents.querySelector(".statu");
 
-            if (statusElement) {
-                statusElement.innerText = 'REJECTED';
-                statusElement.className = 'btn mr-2 border-2 text-red-500 border-red-500 bg-red-100 p-2 text-xs my-3';
+            if (statusReject) {
+                statusReject.innerText = 'REJECTED';
+                statusReject.className = 'btn mr-2 border-2 text-red-500 border-red-500 bg-red-100 p-2 text-xs my-3 statu';
             }
 
             if (!existItem) {
@@ -127,9 +141,6 @@ function toggleBtn(id) {
             if (currentStatus === "interview-btn") {
                 addInterview();
             } else if (currentStatus === "rejected-btn") {
-                addReject();
-            }else{
-                addInterview();
                 addReject();
             }
         }
@@ -157,7 +168,7 @@ function addInterview() {
                 <div>
                     <p class="salary-or-time text-gray-500 text-base py-2">${interview.salary}
                     </p>
-                    <p class="btn mr-2 border-2 text-green-500 border-green-500 bg-green-100 p-2 text-xs my-3">INTERVIEW</p>
+                    <p class="btn mr-2 border-2 text-green-500 border-green-500 bg-green-100 p-2 text-xs my-3 statu">INTERVIEW</p>
                     <p class="requirement text-[#323B49] my-2">${interview.reqirment}</p>
                     <div class="">
                         <button class="btn mr-2 border-2 text-green-400 border-green-400 inter">INTERVIEW</button>
@@ -192,7 +203,7 @@ function addReject() {
                 <div>
                     <p class="salary-or-time text-gray-500 text-base py-2">${reject.salary}
                     </p>
-                    <p class="btn mr-2 border-2 text-red-500 border-red-500 bg-red-200 p-2 text-xs my-3">REJECTED</p>
+                    <p class="btn mr-2 border-2 text-red-500 border-red-500 bg-red-200 p-2 text-xs my-3 statu">REJECTED</p>
                     <p class="requirement text-[#323B49] my-2">${reject.reqirment}</p>
                     <div class="">
                         <button class="btn mr-2 border-2 text-green-400 border-green-400 inter">INTERVIEW</button>
