@@ -9,7 +9,7 @@ const addSection = document.getElementById("add-section");
 const allCar = document.getElementById("all-cards");
 const noJobs = document.getElementById('no-jobs');
 const countHidden = document.getElementById("counts-cards-hide");
-const rejectCountCard =document.getElementById("of-hide");
+const rejectCountCard = document.getElementById("of-hide");
 
 
 function toggleBtn(id) {
@@ -39,13 +39,12 @@ function toggleBtn(id) {
         countHidden.classList.remove("hidden");
         rejectCountCard.classList.add("hidden");
         if (interviewList.length === 0) {
-            noJobs.classList.remove("hidden");
             addSection.innerHTML = '';
-
-        }
+            noJobs.classList.remove("hidden");
+         }
         else {
             noJobs.classList.add("hidden");
-            
+
             addInterview()
         }
     } else if (id === "rejected-btn") {
@@ -56,12 +55,12 @@ function toggleBtn(id) {
 
 
         if (rejectedList.length === 0) {
-            noJobs.classList.remove("hidden");
             addSection.innerHTML = '';
-        }
+            noJobs.classList.remove("hidden");
+         }
         else {
             noJobs.classList.add("hidden");
-          
+
             addReject()
         }
     }
@@ -87,8 +86,8 @@ function toggleBtn(id) {
                 reqirment
             };
             const existItem = interviewList.find(item => item.name == cardInfo.name);
-             const statusElement = parents.querySelector(".statu");
-             console.log(statusElement);
+            const statusElement = parents.querySelector(".statu");
+            console.log(statusElement);
 
             if (statusElement) {
                 statusElement.innerText = 'INTERVIEW';
