@@ -1,5 +1,6 @@
 let interviewList = [];
 let rejectedList = [];
+let currentStatus = "all-btn";
 
 const allBtn = document.getElementById("all-btn");
 const interviewBtn = document.getElementById("interview-btn");
@@ -10,6 +11,7 @@ const noJobs = document.getElementById('no-jobs');
 
 
 function toggleBtn(id) {
+
     allBtn.classList.add("bg-gray", "text-neutral");
     interviewBtn.classList.add("bg-gray", "text-neutral");
     rejectedBtn.classList.add("bg-gray", "text-neutral");
@@ -18,7 +20,7 @@ function toggleBtn(id) {
     rejectedBtn.classList.remove("bg-primary", "text-white");
 
     const selected = document.getElementById(id);
-
+    currentStatus = id;
     selected.classList.remove("bg-gray", "text-neutral");
     selected.classList.add("bg-primary", "text-white");
 
@@ -32,41 +34,106 @@ function toggleBtn(id) {
         addSection.classList.remove("hidden");
         if (interviewList.length === 0) {
             noJobs.classList.remove("hidden");
+            addSection.innerHTML = '';
         }
         else {
             noJobs.classList.add("hidden");
+            addInterview()
+        }
+    } else if (id === "rejected-btn") {
+        allCar.classList.add("hidden");
+        addSection.classList.remove("hidden");
+
+        if (rejectedList.length === 0) {
+            noJobs.classList.remove("hidden");
+            addSection.innerHTML = '';
+        }
+        else {
+            noJobs.classList.add("hidden");
+            addReject()
         }
     }
 
 }
 
-allCar.addEventListener("click", function (event) {
-    if (event.target.classList.contains('inter')) {
-        const parents = event.target.parentNode.parentNode.parentNode;
-        const name = parents.querySelector(".cardName").innerText;
-        const skils = parents.querySelector(".skills").innerText;
-        const salary = parents.querySelector(".salary-or-time").innerText;
-        const status = parents.querySelector(".statu").innerText;
-        const reqirment = parents.querySelector(".requirement").innerText;
 
-        const cardInfo = {
-            name,
-            skils,
-            salary,
-            status,
-            reqirment
-        };
-        const existItem = interviewList.find(item => item.name == cardInfo.name);
-        parents.querySelector(".statu").innerText = 'INTERVIEW';
-        parents.querySelector(".statu").classList = ' btn mr-2 border-2 text-green-400 border-green-400 bg-green-100 p-2 text-xs my-3';
+[allCar, addSection].forEach(section => {
+    section.addEventListener("click", function (event) {
+        if (event.target.classList.contains('inter')) {
+            const parents = event.target.parentNode.parentNode.parentNode;
+            const name = parents.querySelector(".cardName").innerText;
+            const skils = parents.querySelector(".skills").innerText;
+            const salary = parents.querySelector(".salary-or-time").innerText;
+            // const status = parents.querySelector(".statu").innerText;
+            const reqirment = parents.querySelector(".requirement").innerText;
 
-        if (!existItem) {
-            interviewList.push(cardInfo);
+            const cardInfo = {
+                name,
+                skils,
+                salary,
+                status,
+                reqirment
+            };
+            const existItem = interviewList.find(item => item.name == cardInfo.name);
+             const statusElement = parents.querySelector(".statu");
+             console.log(statusElement);
 
+            if (statusElement) {
+                statusElement.innerText = 'INTERVIEW';
+                statusElement.className = ' btn mr-2 border-2 text-green-400 border-green-400 bg-green-100 p-2 text-xs my-3';
+            }
+            if (!existItem) {
+                interviewList.push(cardInfo);
+
+            }
+            rejectedList = rejectedList.filter(item => item.name !== cardInfo.name);
+
+            calculateCounts();
+            if (currentStatus == "rejected-btn") {
+
+                addReject();
+            } else {
+                addInterview();
+            }
+        } else if (event.target.classList.contains('reject')) {
+            const parents = event.target.parentNode.parentNode.parentNode;
+            const name = parents.querySelector(".cardName").innerText;
+            const skils = parents.querySelector(".skills").innerText;
+            const salary = parents.querySelector(".salary-or-time").innerText;
+            // const status = parents.querySelector(".statu").innerText;
+            const reqirment = parents.querySelector(".requirement").innerText;
+
+            const cardInfo = {
+                name,
+                skils,
+                salary,
+                status,
+                reqirment
+            };
+            const existItem = rejectedList.find(item => item.name == cardInfo.name);
+            const statusElement = parents.querySelector(".statu");
+
+            if (statusElement) {
+                statusElement.innerText = 'REJECTED';
+                statusElement.className = 'btn mr-2 border-2 text-red-500 border-red-500 bg-red-100 p-2 text-xs my-3';
+            }
+
+            if (!existItem) {
+                rejectedList.push(cardInfo);
+
+            }
+            interviewList = interviewList.filter(item => item.name !== cardInfo.name);
+            calculateCounts();
+            if (currentStatus === "interview-btn") {
+                addInterview();
+            } else if (currentStatus === "rejected-btn") {
+                addReject();
+            }else{
+                addInterview();
+                addReject();
+            }
         }
-        calculateCounts();
-        addInterview();
-    }
+    });
 });
 function addInterview() {
     addSection.innerHTML = '';
@@ -90,7 +157,7 @@ function addInterview() {
                 <div>
                     <p class="salary-or-time text-gray-500 text-base py-2">${interview.salary}
                     </p>
-                    <p class=" btn mr-2 border-2 text-green-400 border-green-400 bg-green-100 p-2 text-xs my-3">INTERVIEW</p>
+                    <p class="btn mr-2 border-2 text-green-500 border-green-500 bg-green-100 p-2 text-xs my-3">INTERVIEW</p>
                     <p class="requirement text-[#323B49] my-2">${interview.reqirment}</p>
                     <div class="">
                         <button class="btn mr-2 border-2 text-green-400 border-green-400 inter">INTERVIEW</button>
@@ -103,3 +170,39 @@ function addInterview() {
 
 
 }
+function addReject() {
+    addSection.innerHTML = '';
+    for (const reject of rejectedList) {
+        let newDiv = document.createElement("div");
+        newDiv.className = 'bg-white p-6 rounded-lg my-4 hover:bg-gray-50';
+        newDiv.innerHTML = `
+     <div class="flex justify-between items-center">
+
+                    <div>
+                        <h3 class="cardName font-bold text-lg">${reject.name}</h3>
+                        <p class="skills text-gray-400 leading-7
+                        ">${reject.skils}</p>
+                    </div>
+                    <div>
+                        <button class="border-1 border-gray-200 rounded-full p-1 cursor-pointer hover:bg-gray-200">
+                            <img src="./image/Trash.png" alt="">
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <p class="salary-or-time text-gray-500 text-base py-2">${reject.salary}
+                    </p>
+                    <p class="btn mr-2 border-2 text-red-500 border-red-500 bg-red-200 p-2 text-xs my-3">REJECTED</p>
+                    <p class="requirement text-[#323B49] my-2">${reject.reqirment}</p>
+                    <div class="">
+                        <button class="btn mr-2 border-2 text-green-400 border-green-400 inter">INTERVIEW</button>
+                        <button class="btn border-2 border-red-500 text-red-500 reject">REJECTED</button>
+                    </div>
+                </div>
+    `
+        addSection.appendChild(newDiv);
+    }
+
+
+}
+
