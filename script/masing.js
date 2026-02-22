@@ -11,7 +11,6 @@ const noJobs = document.getElementById('no-jobs');
 const countHidden = document.getElementById("counts-cards-hide");
 const rejectCountCard = document.getElementById("of-hide");
 
-
 function toggleBtn(id) {
 
     allBtn.classList.add("bg-gray", "text-neutral");
@@ -32,6 +31,15 @@ function toggleBtn(id) {
         noJobs.classList.add("hidden");
         countHidden.classList.add("hidden");
         rejectCountCard.classList.add("hidden");
+        if (allCar.childElementCount === 0) {
+            noJobs.classList.remove("hidden");
+            addSection.innerHTML = '';
+        }
+        else {
+            noJobs.classList.add("hidden");
+
+         
+        }
 
     } else if (id === "interview-btn") {
         allCar.classList.add("hidden");
@@ -41,7 +49,7 @@ function toggleBtn(id) {
         if (interviewList.length === 0) {
             addSection.innerHTML = '';
             noJobs.classList.remove("hidden");
-         }
+        }
         else {
             noJobs.classList.add("hidden");
 
@@ -57,7 +65,7 @@ function toggleBtn(id) {
         if (rejectedList.length === 0) {
             addSection.innerHTML = '';
             noJobs.classList.remove("hidden");
-         }
+        }
         else {
             noJobs.classList.add("hidden");
 
@@ -75,19 +83,16 @@ function toggleBtn(id) {
             const name = parents.querySelector(".cardName").innerText;
             const skils = parents.querySelector(".skills").innerText;
             const salary = parents.querySelector(".salary-or-time").innerText;
-            // const status = parents.querySelector(".statu").innerText;
             const reqirment = parents.querySelector(".requirement").innerText;
 
             const cardInfo = {
                 name,
                 skils,
                 salary,
-                status,
                 reqirment
             };
             const existItem = interviewList.find(item => item.name == cardInfo.name);
             const statusElement = parents.querySelector(".statu");
-            console.log(statusElement);
 
             if (statusElement) {
                 statusElement.innerText = 'INTERVIEW';
@@ -106,26 +111,22 @@ function toggleBtn(id) {
             } else {
                 addInterview();
             }
+            deleteItem();
         } else if (event.target.classList.contains('reject')) {
             const parents = event.target.parentNode.parentNode.parentNode;
-            console.log(parents)
             const name = parents.querySelector(".cardName").innerText;
             const skils = parents.querySelector(".skills").innerText;
             const salary = parents.querySelector(".salary-or-time").innerText;
-            const status = parents.querySelector(".statu").innerText;
-            console.log(status);
             const reqirment = parents.querySelector(".requirement").innerText;
 
             const cardInfo = {
                 name,
                 skils,
                 salary,
-                status,
                 reqirment
             };
             const existItem = rejectedList.find(item => item.name == cardInfo.name);
             const statusReject = parents.querySelector(".statu");
-
             if (statusReject) {
                 statusReject.innerText = 'REJECTED';
                 statusReject.className = 'btn mr-2 border-2 text-red-500 border-red-500 bg-red-100 p-2 text-xs my-3 statu';
@@ -142,14 +143,29 @@ function toggleBtn(id) {
             } else if (currentStatus === "rejected-btn") {
                 addReject();
             }
+
+        } else if (event.target.closest('.delete')) {
+            let deletesParents = event.target.parentNode.parentNode.parentNode.parentNode;
+            deletesParents.remove("div");
+            const parents = event.target.closest('.bg-white');
+            const nameToDelete = parents.querySelector(".cardName").innerText;
+            parents.remove();
+            if (currentStatus === "interview-btn") {
+                interviewList = interviewList.filter(item => item.name !== nameToDelete);
+            } else if (currentStatus === "rejected-btn") {
+                 rejectedList = rejectedList.filter(item => item.name !== nameToDelete);
+            }
+            calculateCounts();
+            
         }
+        
     });
 });
 function addInterview() {
     addSection.innerHTML = '';
     for (const interview of interviewList) {
         let newDiv = document.createElement("div");
-        newDiv.className = 'bg-white p-6 rounded-lg my-4 hover:bg-gray-50';
+        newDiv.className = 'bg-white p-6 rounded-lg my-4 hover:bg-gray-50 hover:border-l-4 hover:border-green-400';
         newDiv.innerHTML = `
      <div class="flex justify-between items-center">
 
@@ -159,7 +175,7 @@ function addInterview() {
                         ">${interview.skils}</p>
                     </div>
                     <div>
-                        <button class="border-1 border-gray-200 rounded-full p-1 cursor-pointer hover:bg-gray-200">
+                        <button class="border-1 border-gray-200 rounded-full p-1 cursor-pointer hover:bg-red-200 delete">
                             <img src="./image/Trash.png" alt="">
                         </button>
                     </div>
@@ -184,7 +200,7 @@ function addReject() {
     addSection.innerHTML = '';
     for (const reject of rejectedList) {
         let newDiv = document.createElement("div");
-        newDiv.className = 'bg-white p-6 rounded-lg my-4 hover:bg-gray-50';
+        newDiv.className = 'bg-white p-6 rounded-lg my-4 hover:bg-gray-50 hover:border-l-4 hover:border-red-500';
         newDiv.innerHTML = `
      <div class="flex justify-between items-center">
 
@@ -194,7 +210,7 @@ function addReject() {
                         ">${reject.skils}</p>
                     </div>
                     <div>
-                        <button class="border-1 border-gray-200 rounded-full p-1 cursor-pointer hover:bg-gray-200">
+                        <button class="border-1 border-gray-200 rounded-full p-1 cursor-pointer hover:bg-red-200 delete">
                             <img src="./image/Trash.png" alt="">
                         </button>
                     </div>
@@ -215,4 +231,4 @@ function addReject() {
 
 
 }
-
+ 

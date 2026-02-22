@@ -6,12 +6,11 @@ let jobCount = document.getElementById("jobs-counts");
 let rejectsCard = document.getElementById("reject-count");
 const counts = allCards.children.length;
 let totalCount = document.getElementById("Total-count");
-// totalCount.innerText = counts;
 
 function calculateCounts() {
 
     totalCount.innerText = allCards.children.length;
-    jobCount.innerText = counts;
+    jobCount.innerText = allCards.children.length;
     interviewCount.innerText = interviewList.length;
     countsCads.innerText = interviewList.length;
     rejectsCard.innerText = rejectedList.length;
