@@ -28,7 +28,7 @@
 ### iv. The Root : Finally , it hits the documents and window.
 
 ------------------------------
-# 4.Event delegation is instead of attaching an event listener to multiple child element in Javascript. Click the childe and the event "bubbkes" up tp the parents event usinf (  event.target   ) property.
+## 4.Event delegation is instead of attaching an event listener to multiple child element in Javascript. Click the childe and the event "bubbkes" up tp the parents event usinf (  event.target   ) property.
 ## Why is it Useful-
 
      - Memory Efficiency
@@ -38,7 +38,7 @@
      - cleaner Code
 
 -------------------------------
-# 5. preventDefault() stops the browser's default action , while stopPropagation() stops thr event from moving up the DOM Tree.
+## 5. preventDefault() stops the browser's default action , while stopPropagation() stops thr event from moving up the DOM Tree.
   ### i. preventDefault()
       - stopping the from refreshing the page on submit Commonly use that
       - does it stop bubbling? no.
