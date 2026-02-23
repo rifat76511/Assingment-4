@@ -1,3 +1,16 @@
+### 1. There ar differences 
+ 
+  # getElementById("id")
+    - return a single element or null
+
+   # getElementByClassName("class")
+    - it returns an html collection and live list
+    - return an array like collection
+   # querySelector("select")/querySelectorAll("select")
+   - select with css selectors .class , #id ,div >p 
+   - querySelector return only fast match if finds
+   - return a NodeList of all matches
+
 ### 2. 
 # first use thr method - document.createElement() like 'div'
 
