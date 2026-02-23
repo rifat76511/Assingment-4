@@ -126,6 +126,7 @@ function toggleBtn(id) {
                 reqirment
             };
             const existItem = rejectedList.find(item => item.name == cardInfo.name);
+            
             const statusReject = parents.querySelector(".statu");
             if (statusReject) {
                 statusReject.innerText = 'REJECTED';
